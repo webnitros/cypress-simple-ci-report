@@ -1,4 +1,4 @@
-# cypress-simple-ci-report
+# cypress-simple-ci-report 2
 
 ![Create Cypress report](https://github.com/wkrzywiec/cypress-simple-ci-report/workflows/Create%20Cypress%20report/badge.svg)
 
