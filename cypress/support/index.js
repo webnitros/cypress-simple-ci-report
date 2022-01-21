@@ -21,12 +21,21 @@ import addContext from 'mochawesome/addContext'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-Cypress.on("test:after:run", (test, runnable) => {
-    
-    let videoName = Cypress.spec.name
-    videoName = videoName.replace('/.js.*', '.js')
-    const videoUrl = 'videos/' + videoName + '.mp4'
+const titleToFileName = (title) => title.replace(/[:\/]/g, "");
 
-    addContext({ test }, videoUrl)
+Cypress.on("test:after:run", (test, runnable) =>
+{
+    if (test.state === "failed")
+    {
+        let parent = runnable.parent;
+        let filename = "";
+        while (parent && parent.title)
+        {
+            filename = `${titleToFileName(parent.title)} -- ${filename}`;
+            parent = parent.parent;
+        }
+        filename += `${titleToFileName(test.title)} (failed).png`;
+        addContext({ test }, `../screenshots/${Cypress.spec.name}/${filename}`);
+        addContext({ test }, `../videos/${Cypress.spec.name}.mp4`);
+    }
 });
-
